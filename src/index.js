@@ -1,2 +1,11 @@
-let name = "Koko";
-console.log(`Hello ${name} from React 16.8!`);
+import './css/app.scss';
+import React from 'react';
+import { render } from 'react-dom';
+
+import App from './app';
+
+const app = document.getElementById('app');
+render(
+  <App />,
+  app
+);

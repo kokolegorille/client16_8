@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 // For dev server
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -19,6 +20,7 @@ const VENDOR_LIBS = [
 
 module.exports = (env) => ({
   context: __dirname,
+  // This increase dev bundle size by ALOT!
   devtool: env && env.dev ? 'inline-sourcemap' : false,
   entry: {
     bundle: SRC_PATH + '/index',
@@ -28,17 +30,18 @@ module.exports = (env) => ({
     path: DIST_PATH,
     publicPath: '',
     filename: 'js/[name].[hash].js',
-    chunkFilename: 'js/[name].js',
+    chunkFilename: 'js/[name].[hash].js',
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.html.template',
+      template: './src/index.html',
       inject: 'body',
     }),
     new MiniCssExtractPlugin({ filename: './css/app.css' }),
     new CopyWebpackPlugin([{ from: 'static/', to: './' }]),
     new Webpack.HotModuleReplacementPlugin(),
+    new ManifestPlugin(),
   ],
   optimization: {
     // https://github.com/webpack/webpack/issues/6357
@@ -71,7 +74,7 @@ module.exports = (env) => ({
       },
       // Load stylesheets
       {
-        test: /\.(scss|css)$/,
+        test: /\.(css|scss)$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -80,7 +83,7 @@ module.exports = (env) => ({
       },
       // Load images
       {
-        test: /\.(png|svg|jpg|gif)(\?.*$|$)/,
+        test: /\.(png|svg|jpe?g|gif)(\?.*$|$)/,
         loader: 'url-loader?limit=10000',
       },
       // Load fonts
