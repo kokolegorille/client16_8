@@ -10,7 +10,7 @@ OBSOLETE! NO NEED TO RENAME THE TEMPLATE!
 This use : 
 
 * React 16.8 (introduce React Hooks)
-* Babel 7 (introduce babel.conifg.js)
+* Babel 7 (introduce babel.config.js)
 * Webpack 4
 
 Hot reload modules
