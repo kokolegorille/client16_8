@@ -18,7 +18,6 @@ Split bundle et vendor
 Ajout de core-js 3
 Configuration de Babel avec : 
 * babel.config.js
-* .babelrc
 
 Après un essai infructueux, ne pas utiliser style-loader
 
