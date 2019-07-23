@@ -68,9 +68,6 @@ module.exports = (env) => ({
         include: SRC_PATH,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        // options: {
-        //   rootMode: "upward",
-        // },
       },
       // Load stylesheets
       {
