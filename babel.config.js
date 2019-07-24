@@ -6,7 +6,9 @@ module.exports = api => {
     '@babel/preset-react',
   ];
   
-  const plugins = [];
+  const plugins = [
+    
+  ];
 
   return {
     presets,
