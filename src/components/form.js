@@ -73,8 +73,39 @@ const Form = ({
     let className = inputClasses.join(' ');
 
     switch(elementType) {
-      // case 'select':
-      // case 'textarea':
+      case 'select':
+        const { options, ...selectProps } = elementConfig;
+        element = (
+          <select
+            name={name}
+            className={className}
+            {...selectProps} >
+            {
+              options.map(option => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                  selected={option.selected}
+                >
+                  {option.displayValue}
+                </option>
+              ))
+            }
+          </select>
+        );
+        break;
+      case 'textarea':
+        element = (
+          <textarea 
+            name={name}
+            value={stateValue}
+            className={className}
+            onChange={e => handleChange(e, name)}
+            {...elementConfig} />
+        );
+        break;
+      
+      // TODO:
       // case 'checkbox':
       // case 'radiobox':
 
@@ -86,8 +117,7 @@ const Form = ({
             value={stateValue}
             className={className}
             onChange={e => handleChange(e, name)}
-            {...elementConfig}
-          />
+            {...elementConfig} />
         );
     }
     return (
@@ -122,14 +152,20 @@ const Form = ({
       {fields}
       <button 
         disabled={!validateForm()}
-        onClick={e => callback(e, sanitizeState(state))}
+        onClick={e => {
+          e.preventDefault();
+          callback(sanitizeState(state));
+        }}
         className="btn btn-primary" >
         Submit
       </button>
       {
         handleCancel &&
         <button 
-          onClick={handleCancel}
+          onClick={e => {
+            e.preventDefault();
+            handleCancel();
+          }}
           className="btn btn-secondary" >
           Cancel
         </button>

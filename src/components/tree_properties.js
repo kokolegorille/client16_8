@@ -4,7 +4,8 @@ import React from 'react';
 
 const TreeProperties = ({object, recursive = true, exclude = []}) => {
   if (!object) return null;
-
+  if (typeof object === "string") return <p>{object}</p>;
+  
   let collector = [];
   
   // format property by typeof

@@ -13,11 +13,14 @@ import useAuthReducer, {
   REFRESH_TOKEN_ERROR,
 } from './hooks/use_auth_reducer';
 
-import Navbar from './components/navbar';
+import Member from './member';
+
 import signinSchema from './schemas/signin_schema';
 import signupSchema from './schemas/signup_schema';
+
+import Navbar from './components/navbar';
 import Form from './components/form';
-import Member from './member';
+import TreeProperties from './components/tree_properties';
 
 import { formatTimestamp } from './utils/formatter';
 
@@ -53,14 +56,16 @@ const App = () => {
   // Extracts server error
   const errorPayload = error => (
     error.response && error.response.data ?
-      JSON.stringify(error.response.data) :
+      error.response.data :
       error.toString()
   );
 
   // Signin 
-  const signin = ({ name, password }) => {
+  const signin = (params) => {
+    // console.log(params);
+
     setInProgress(true);
-    Api.signin({ name, password })
+    Api.signin(params)
     .then((response) => {
       setInProgress(false);
       setSignMode(null);
@@ -73,9 +78,11 @@ const App = () => {
   };
 
   // Signup
-  const signup = ({ name, email, password }) => {
+  const signup = (params) => {
+    // console.log(params);
+
     setInProgress(true);
-    Api.signup({ name, email, password })
+    Api.signup(params)
     .then((response) => {
       setInProgress(false);
       setSignMode(null);
@@ -117,20 +124,9 @@ const App = () => {
     Auth.removeToken();
   };
 
-  const handleSubmitSignin = (e, formState) => {
-    e.preventDefault();
-    signin(formState);
-  };
-
-  const handleSubmitSignup = (e, formState) => {
-    e.preventDefault();
-    signup(formState);
-  };
-
-  const handleCancel = e => {
-    e.preventDefault();
-    setSignMode(null);
-  };
+  const handleSubmitSignin = formState => signin(formState);
+  const handleSubmitSignup = formState => signup(formState);
+  const handleCancel = () => setSignMode(null);
 
   // Elements for main navbar
   const elements = authentication.isAuthenticated ?
@@ -157,11 +153,11 @@ const App = () => {
         <div className="container mt-4">
           {
               inProgress && 
-              <img src="/images/spinner.png" />
+              <img src='/images/spinner.png' />
           }  
           {
             authentication.error && 
-            <p>{JSON.stringify(authentication.error)}</p>
+            <TreeProperties object={authentication.error} />
           }
           {
             !authentication.isAuthenticated && !signMode &&
