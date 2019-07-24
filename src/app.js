@@ -28,7 +28,7 @@ const App = () => {
   const [bootupTime, setBootupTime] = useState(null);
   const [inProgress, setInProgress] = useState(false);
   const [signMode, setSignMode] = useState(null);
-  const [authentication, dispatch]  = useAuthReducer();
+  const [authentication, dispatch] = useAuthReducer();
   const { token } = authentication;
 
   // Set Bootup Time only once
@@ -156,16 +156,14 @@ const App = () => {
               <img src='/images/spinner.png' />
           }  
           {
-            authentication.error && 
-            <TreeProperties object={authentication.error} />
+            authentication.errors && 
+            <TreeProperties object={authentication.errors} />
           }
           {
             !authentication.isAuthenticated && !signMode &&
             <>
               <h2>Welcome</h2>
-              <p>
-                You are not connected.
-              </p>
+              <p>You are not connected.</p>
             </>
           }
           {

@@ -1,4 +1,4 @@
-import {useReducer} from 'react';
+import { useReducer } from 'react';
 
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
@@ -13,7 +13,7 @@ const defaultState = {
   isAuthenticated: false,
   currentUser: null,
   token: null,
-  error: null,
+  errors: null,
 }
 
 const reducer = (state, action) => {
@@ -26,7 +26,7 @@ const reducer = (state, action) => {
         isAuthenticated: true,
         currentUser: user,
         token,
-        error: null,
+        errors: null,
       }
     
     case SIGNIN_ERROR:
@@ -37,7 +37,7 @@ const reducer = (state, action) => {
         isAuthenticated: false,
         currentUser: null,
         token: null,
-        error: action.payload,
+        errors: action.payload,
       }
 
     case SIGNOUT_SUCCESS:
@@ -45,7 +45,7 @@ const reducer = (state, action) => {
         isAuthenticated: false,
         currentUser: null,
         token: null,
-        error: null,
+        errors: null,
       }
 
     default:
