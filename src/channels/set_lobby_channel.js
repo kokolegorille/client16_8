@@ -4,7 +4,7 @@ import {
   CONNECT_CHANNEL_TIMEOUT,
   CHANNEL_ERROR,
   CHANNEL_CLOSED,
-} from '../hooks/use_socket_reducer';
+} from '../hooks/use_channels_reducer';
 import setPresence from './set_presence';
 
 const setLobbyChannel = (dispatch, socket, topic = 'lobby') => {

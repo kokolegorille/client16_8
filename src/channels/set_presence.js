@@ -1,7 +1,7 @@
   
 import { Presence } from 'phoenix';
 
-import { DISPATCH_PRESENCE_SYNC } from '../hooks/use_socket_reducer';
+import { DISPATCH_PRESENCE_SYNC } from '../hooks/use_channels_reducer';
  
 const listBy = (id, { metas: [first, ...rest] }) =>
   Object.assign({}, first, { id, count: rest.length + 1 });

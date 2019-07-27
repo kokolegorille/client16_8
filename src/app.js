@@ -15,7 +15,7 @@ import useAuthReducer, {
 
 import AuthContext from './contexts/auth_context';
 
-import Member from './member';
+import Member from './views/member';
 
 import signinSchema from './schemas/signin_schema';
 import signupSchema from './schemas/signup_schema';
