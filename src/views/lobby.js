@@ -30,6 +30,7 @@ const Lobby = () => {
   }, [state.isConnected]);
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log("Mounted");
 
     return () => {
@@ -40,8 +41,31 @@ const Lobby = () => {
   return (
     <div>
       <h2>Lobby</h2>
-      <p>{state.isConnected ? 'ON' : 'OFF'}</p>
       <TreeProperties object={printableState} />
+      <ul>
+        {
+          Object.keys(allowedChannels).map(topicPrefix => 
+            channelsState.channels[topicPrefix] ?
+            <li>
+              {topicPrefix}&nbsp;
+              <button 
+                onClick={() => leaveChannel(topicPrefix)}
+                className='btn btn-link' >
+                Disconnect
+              </button>
+            </li>
+             :
+            <li>
+              {topicPrefix}&nbsp;
+              <button 
+                onClick={() => joinChannel(state.socket, topicPrefix)}
+                className='btn btn-link' >
+                Reconnect
+              </button>
+            </li>
+          )
+        }
+      </ul>
     </div>
   )
 };

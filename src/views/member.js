@@ -7,7 +7,8 @@ import useSocketReducer, {
   SOCKET_ERROR,
   SOCKET_CLOSED,
 } from '../hooks/use_socket_reducer';
-import useChannelsReducer from '../hooks/use_channels_reducer';
+import useChannelsReducer, 
+  { CLEAR_MESSAGES } from '../hooks/use_channels_reducer';
 
 import SocketContext from '../contexts/socket_context';
 
@@ -33,9 +34,9 @@ const allowedChannels = {
 
 const Member = ({authentication}) => {
   const [state, dispatch] = useSocketReducer();
-  const [channelsState, _channelsDispatch, channelsActions] = 
+  const [channelsState, channelsDispatch, channelsActions] = 
     useChannelsReducer(allowedChannels);
-  const { joinChannel, leaveChannel } = channelsActions;
+  const { joinChannel, leaveChannel, send } = channelsActions;
 
   const openSocket = () => {
     const newSocket = new Socket(
@@ -96,6 +97,16 @@ const Member = ({authentication}) => {
     )
   };
 
+  // This will return a full topic, with interpolated variables
+  const prefixToTopic = prefix => {
+    switch(prefix) {
+      case 'user':
+        return `user:${authentication.currentUser.id}`;
+      default:
+        return prefix
+    }
+  };
+
   return (
     <div>
       <h1>Member</h1>
@@ -108,6 +119,42 @@ const Member = ({authentication}) => {
           <h3>Network</h3>
           <TreeProperties object={state} exclude={['socket']} />
           <TreeProperties object={printableState} />
+          <ul>
+            {
+              Object.keys(allowedChannels)
+                .map(topicPrefix => prefixToTopic(topicPrefix))
+                .map(fullTopic => 
+                channelsState.channels[fullTopic] ?
+                <li>
+                  {fullTopic}&nbsp;
+                  <button 
+                    onClick={() => leaveChannel(fullTopic)}
+                    className='btn btn-link' >
+                    Disconnect
+                  </button>
+                </li>
+                :
+                <li>
+                  {fullTopic}&nbsp;
+                  <button 
+                    onClick={() => joinChannel(state.socket, fullTopic)}
+                    className='btn btn-linkå' >
+                    Reconnect
+                  </button>
+                </li>
+              )
+            }
+          </ul>
+          <button 
+            onClick={() => send('system', 'ping', {ping_time: Date.now()})}
+            className="btn btn-link">
+            Ping
+          </button>
+          <button 
+            onClick={() => channelsDispatch({type: CLEAR_MESSAGES})}
+            className="btn btn-link">
+            Clear messages
+          </button>
         </div>
         <SocketContext.Provider 
           value={state}>

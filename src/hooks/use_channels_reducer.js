@@ -3,10 +3,15 @@ import { useReducer } from 'react';
 const defaultState = {
   channels: {},
   presences: {},
+  messages: [],
 };
 
 export const CHANNEL_CONNECTED = 'CHANNEL_CONNECTED';
 export const CHANNEL_DISCONNECTED = 'CHANNEL_DISCONNECTED';
+// Messages from socket
+export const MESSAGE_RECEIVED = 'MESSAGE_RECEIVED';
+export const MESSAGE_SENT = 'MESSAGE_SENT';
+export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 // Errors
 export const CONNECT_CHANNEL_ERROR = 'CONNECT_CHANNEL_ERROR';
 export const CONNECT_CHANNEL_TIMEOUT = 'CONNECT_CHANNEL_TIMEOUT';
@@ -63,7 +68,27 @@ const reducer = (state, action) => {
         ...state,
         presences: copyPresences,
       }
-      
+    
+    // Messages
+    case CLEAR_MESSAGES:
+      console.log("KNDVLKSVLDSBV")
+      return {
+        ...state,
+        messages: []
+      }
+
+    case MESSAGE_SENT:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload]
+      }
+
+    case MESSAGE_RECEIVED:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload]
+      }
+
     default:
       return state
   }
@@ -101,8 +126,23 @@ const useChannelsReducer = (allowedChannels, initialState = defaultState) => {
     dispatch({type: CHANNEL_DISCONNECTED, payload: { topic }});
   }
 
+  const send = (topic, command, payload) => {
+    const message = `SEND COMMAND -> Topic : ${topic}, ` +
+    `Command : ${command}, Payload : ${payload}`;
+    // eslint-disable-next-line no-console
+    console.log(message);
+
+    const channel = state.channels[topic];
+    if (!!channel) {
+      channel.push(command, payload);
+      dispatch({type: MESSAGE_SENT, payload: {topic, command, payload}});
+    } else {
+      console.log(`${message} could not be sent`);
+    }
+  };
+
   // state, dispatch, actions object
-  return [state, dispatch, { joinChannel, leaveChannel }];
+  return [state, dispatch, { joinChannel, leaveChannel, send }];
 };
 
 export default useChannelsReducer;
