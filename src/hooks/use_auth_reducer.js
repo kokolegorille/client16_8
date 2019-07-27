@@ -9,7 +9,7 @@ export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export const REFRESH_TOKEN_ERROR = 'REFRESH_TOKEN_ERROR';
 export const SIGNOUT_ERROR = 'SIGNOUT_ERROR';
 
-const defaultState = {
+export const defaultState = {
   isAuthenticated: false,
   currentUser: null,
   token: null,
@@ -17,6 +17,9 @@ const defaultState = {
 }
 
 const reducer = (state, action) => {
+  
+  console.log(action);
+
   switch (action.type) {
     case REFRESH_TOKEN_SUCCESS:
     case SIGNIN_SUCCESS:

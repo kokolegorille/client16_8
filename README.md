@@ -1,5 +1,7 @@
 # Simple starter kit for React 16.8
 
+Phoenix client written in React 16.8, with hooks only.
+
 ## Installation
 
 $ mkdir client16_8

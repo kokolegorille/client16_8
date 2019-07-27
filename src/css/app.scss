@@ -1,5 +1,9 @@
 /* Bootstrap 4 style */
-@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "./bootstrap_variables";
+@import "~bootstrap/scss/bootstrap.scss";
+
+// standard Bootstrap
+// @import "~bootstrap/dist/css/bootstrap.min.css";
 
 @import "./style";
 @import "./fonts";

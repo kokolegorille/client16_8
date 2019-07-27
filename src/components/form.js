@@ -54,7 +54,7 @@ const Form = ({
   };
 
   // Create a field based on schema metadata
-  const renderField = name => {
+  const renderField = (name, autoFocus = false) => {
     const { 
       elementType, 
       elementConfig,
@@ -79,6 +79,7 @@ const Form = ({
           <select
             name={name}
             className={className}
+            autoFocus={autoFocus}
             {...selectProps} >
             {
               options.map(option => (
@@ -100,6 +101,7 @@ const Form = ({
             name={name}
             value={stateValue}
             className={className}
+            autoFocus={autoFocus}
             onChange={e => handleChange(e, name)}
             {...elementConfig} />
         );
@@ -116,6 +118,7 @@ const Form = ({
             name={name}
             value={stateValue}
             className={className}
+            autoFocus={autoFocus}
             onChange={e => handleChange(e, name)}
             {...elementConfig} />
         );
@@ -143,7 +146,7 @@ const Form = ({
   const validateForm = () => names.map(name => state[name].valid).every(v => v);
 
   // Build fields
-  const fields = names.map(name => renderField(name));
+  const fields = names.map((name, index) => renderField(name, index === 0));
   
   // console.log(state);
 

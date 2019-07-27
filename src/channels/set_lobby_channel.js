@@ -5,9 +5,13 @@ import {
   CHANNEL_ERROR,
   CHANNEL_CLOSED,
 } from '../hooks/use_socket_reducer';
+import setPresence from './set_presence';
 
-const setUserChannel = (dispatch, socket, topic) => {
+const setLobbyChannel = (dispatch, socket, topic = 'lobby') => {
   const channel = socket.channel(topic, {});
+
+  // Presences
+  setPresence(channel, dispatch);
 
   // Join
   if (channel.state !== 'joined') {
@@ -39,4 +43,4 @@ const setUserChannel = (dispatch, socket, topic) => {
   // return channel;
 };
 
-export default setUserChannel;
+export default setLobbyChannel;

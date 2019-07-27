@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useContext  } from 'react';
+import AuthContext from '../contexts/auth_context';
 
-// SAMPLE ELEMENTS FOR NAVBAR
-//
-// const elements = authentication.isAuthenticated ?
-// [
-//   {type: 'text', label: `Welcome ${authentication.currentUser.name}!`},
-//   {type: 'link', label: 'Sign Out', handler: () => signout(token)},
-// ] :
-// [
-//   {type: 'link', label: 'Sign In', handler: () => setSignMode('SIGNIN')},
-//   {type: 'link', label: 'Sign Up', handler: () => setSignMode('SIGNUP')},
-// ];
+// Elements for main navbar
+const build_elements = ({authentication, setSignMode, signout}) => (
+  authentication.isAuthenticated ?
+  [
+    {type: 'text', label: `Welcome ${authentication.currentUser.name}!`},
+    {type: 'link', label: 'Sign Out', handler: () => signout(authentication.token)},
+  ] :
+  [
+    {type: 'link', label: 'Sign In', handler: () => setSignMode('SIGNIN')},
+    {type: 'link', label: 'Sign Up', handler: () => setSignMode('SIGNUP')},
+  ]
+);
 
-const Navbar = ({ elements }) => {
-  const content = elements.map(element => (
+const Navbar = () => {
+  const authentication = useContext(AuthContext);
+
+  const content = build_elements(authentication).map(element => (
     <li className="nav-item" key={element.label}>
       {
         element.type === "text" ?

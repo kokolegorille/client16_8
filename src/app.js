@@ -13,6 +13,8 @@ import useAuthReducer, {
   REFRESH_TOKEN_ERROR,
 } from './hooks/use_auth_reducer';
 
+import AuthContext from './contexts/auth_context';
+
 import Member from './member';
 
 import signinSchema from './schemas/signin_schema';
@@ -128,26 +130,22 @@ const App = () => {
   const handleSubmitSignup = formState => signup(formState);
   const handleCancel = () => setSignMode(null);
 
-  // Elements for main navbar
-  const elements = authentication.isAuthenticated ?
-    [
-      {type: 'text', label: `Welcome ${authentication.currentUser.name}!`},
-      {type: 'link', label: 'Sign Out', handler: () => signout(token)},
-    ] :
-    [
-      {type: 'link', label: 'Sign In', handler: () => setSignMode('SIGNIN')},
-      {type: 'link', label: 'Sign Up', handler: () => setSignMode('SIGNUP')},
-    ];
-
   // DEBUG
   //
   // console.log(JSON.stringify(authentication));
 
   return (
     <div>
-      <header>
-        <Navbar elements={elements} />
-      </header>
+      <AuthContext.Provider 
+        value={{
+          authentication,
+          setSignMode,
+          signout
+        }}>
+        <header>
+          <Navbar />
+        </header>
+      </AuthContext.Provider>
 
       <main role="main">
         <div className="container mt-4">
