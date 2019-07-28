@@ -24,8 +24,8 @@ import Navbar from './components/navbar';
 import Form from './components/form';
 import TreeProperties from './components/tree_properties';
 
+import Room from './views/room';
 import TodoApp from './views/todoApp';
-import Joystick from './components/joystick';
 
 import { formatTimestamp } from './utils/formatter';
 
@@ -194,7 +194,7 @@ const App = () => {
             </>
           }
           <TodoApp />
-          <Joystick />
+          <Room />
         </div>
       </main>
       

@@ -25,10 +25,7 @@ const padStyle = {
 const initialPosition = {top: 20, left: 20};
 const initialOffset = {x: 0, y: 0};
 
-// For testing purpose
-const defaultCallback = data => console.log(data);
-
-const Joystick = ({ callback = defaultCallback }) => {
+const Joystick = ({ callback }) => {
   const padRef = useRef();
   // Pad position top and left
   const [position, setPosition] = useState(initialPosition);
@@ -107,7 +104,8 @@ const Joystick = ({ callback = defaultCallback }) => {
     const forward = -(top - initialPosition.top + padHeight / 2) / maxRadius;
     const turn = (left - initialPosition.left + padWidth / 2) / maxRadius;
 
-    callback({forward, turn});
+    if (callback) callback({forward, turn});
+    else console.log('Please define a callback handler for joystick');
 
     setPosition({
       top: top + padHeight / 2, 
