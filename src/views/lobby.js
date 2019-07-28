@@ -46,7 +46,7 @@ const Lobby = () => {
         {
           Object.keys(allowedChannels).map(topicPrefix => 
             channelsState.channels[topicPrefix] ?
-            <li>
+            <li key={topicPrefix}>
               {topicPrefix}&nbsp;
               <button 
                 onClick={() => leaveChannel(topicPrefix)}
@@ -55,7 +55,7 @@ const Lobby = () => {
               </button>
             </li>
              :
-            <li>
+            <li key={topicPrefix}>
               {topicPrefix}&nbsp;
               <button 
                 onClick={() => joinChannel(state.socket, topicPrefix)}

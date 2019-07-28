@@ -80,13 +80,27 @@ const reducer = (state, action) => {
     case MESSAGE_SENT:
       return {
         ...state,
-        messages: [...state.messages, action.payload]
+        messages: [
+          ...state.messages, 
+          {
+            ...action.payload, 
+            type: 'OUT', 
+            timestamp: Date.now()
+          }
+        ]
       }
 
     case MESSAGE_RECEIVED:
       return {
         ...state,
-        messages: [...state.messages, action.payload]
+        messages: [
+          ...state.messages, 
+          {
+            ...action.payload, 
+            type: 'IN', 
+            timestamp: Date.now()
+          }
+        ]
       }
 
     default:
@@ -94,8 +108,13 @@ const reducer = (state, action) => {
   }
 }
 
-const useChannelsReducer = (allowedChannels, initialState = defaultState) => {
+const useChannelsReducer = (
+  allowedChannels, 
+  initialState = defaultState
+) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // ACTIONS
 
   const joinChannel = (socket, topic) => {
     const topicPrefix = topic.split(':')[0];
@@ -129,20 +148,26 @@ const useChannelsReducer = (allowedChannels, initialState = defaultState) => {
   const send = (topic, command, payload) => {
     const message = `SEND COMMAND -> Topic : ${topic}, ` +
     `Command : ${command}, Payload : ${payload}`;
-    // eslint-disable-next-line no-console
-    console.log(message);
 
     const channel = state.channels[topic];
     if (!!channel) {
       channel.push(command, payload);
       dispatch({type: MESSAGE_SENT, payload: {topic, command, payload}});
+      
+      // eslint-disable-next-line no-console
+      console.log(message);
     } else {
+      // eslint-disable-next-line no-console
       console.log(`${message} could not be sent`);
     }
   };
 
   // state, dispatch, actions object
-  return [state, dispatch, { joinChannel, leaveChannel, send }];
+  return [
+    state, 
+    dispatch, 
+    { joinChannel, leaveChannel, send }
+  ];
 };
 
 export default useChannelsReducer;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import validation from '../utils/validation';
 
@@ -7,9 +7,16 @@ const Form = ({
   schema,
   initialState = {}, 
   handleCancel,
+  // Reset the form on submit?
+  resetOnSubmit = false,
 }) => {
   // Display label, or not
   const showLabel = false;
+
+  // The ref of the first input
+  // It will be used on form submit to set focus on its
+  // When resetOnSubmit is true
+  const firstRef = useRef();
 
   // Create initial state
   const loadState = obj => {
@@ -54,12 +61,12 @@ const Form = ({
   };
 
   // Create a field based on schema metadata
-  const renderField = (name, autoFocus = false) => {
+  const renderField = (name, first = false) => {
     const { 
       elementType, 
       elementConfig,
     } = schema[name];
-    
+
     let inputClasses = ['form-control'];
 
     const { valid, touched, value } = state[name];
@@ -72,14 +79,20 @@ const Form = ({
     let stateValue = value || '';
     let className = inputClasses.join(' ');
 
+    let calculatedProps = {
+      className,
+      autoFocus: first
+    };
+    
+    if (first) calculatedProps = {...calculatedProps, ref: firstRef};
+
     switch(elementType) {
       case 'select':
         const { options, ...selectProps } = elementConfig;
         element = (
           <select
             name={name}
-            className={className}
-            autoFocus={autoFocus}
+            {...calculatedProps}
             {...selectProps} >
             {
               options.map(option => (
@@ -100,8 +113,7 @@ const Form = ({
           <textarea 
             name={name}
             value={stateValue}
-            className={className}
-            autoFocus={autoFocus}
+            {...calculatedProps}
             onChange={e => handleChange(e, name)}
             {...elementConfig} />
         );
@@ -117,8 +129,7 @@ const Form = ({
           <input 
             name={name}
             value={stateValue}
-            className={className}
-            autoFocus={autoFocus}
+            {...calculatedProps}
             onChange={e => handleChange(e, name)}
             {...elementConfig} />
         );
@@ -147,6 +158,8 @@ const Form = ({
 
   // Build fields
   const fields = names.map((name, index) => renderField(name, index === 0));
+
+  const reset = () => setState(loadState(initialState));
   
   // console.log(state);
 
@@ -158,6 +171,12 @@ const Form = ({
         onClick={e => {
           e.preventDefault();
           callback(sanitizeState(state));
+
+          if (resetOnSubmit) {
+            // reset the form and focus on first input
+            reset();
+            firstRef.current.focus();
+          };
         }}
         className="btn btn-primary" >
         Submit

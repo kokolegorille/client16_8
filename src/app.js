@@ -24,6 +24,8 @@ import Navbar from './components/navbar';
 import Form from './components/form';
 import TreeProperties from './components/tree_properties';
 
+import TodoApp from './views/todoApp';
+
 import { formatTimestamp } from './utils/formatter';
 
 const App = () => {
@@ -186,7 +188,10 @@ const App = () => {
           }
           {
             authentication.isAuthenticated &&
-            <Member authentication={authentication} />
+            <>
+              <Member authentication={authentication} />
+              <TodoApp />
+            </>
           }
         </div>
       </main>

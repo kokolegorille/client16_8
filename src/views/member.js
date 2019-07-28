@@ -52,15 +52,7 @@ const Member = ({authentication}) => {
   };
 
   const closeSocket = () => {
-    if (state.socket) {
-      try {
-        socket.disconnect();
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
-      }
-      dispatch({type: SOCKET_CLOSED});
-    }
+    dispatch({type: SOCKET_CLOSED});
   }
 
   // Triggered when socket is on/off
@@ -125,7 +117,7 @@ const Member = ({authentication}) => {
                 .map(topicPrefix => prefixToTopic(topicPrefix))
                 .map(fullTopic => 
                 channelsState.channels[fullTopic] ?
-                <li>
+                <li key={fullTopic}>
                   {fullTopic}&nbsp;
                   <button 
                     onClick={() => leaveChannel(fullTopic)}
@@ -134,7 +126,7 @@ const Member = ({authentication}) => {
                   </button>
                 </li>
                 :
-                <li>
+                <li key={fullTopic}>
                   {fullTopic}&nbsp;
                   <button 
                     onClick={() => joinChannel(state.socket, fullTopic)}

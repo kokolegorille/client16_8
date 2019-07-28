@@ -1,4 +1,4 @@
-const schema = {
+const signinSchema = {
   name: {
     elementType: 'input',
     elementConfig: {
@@ -58,4 +58,4 @@ const schema = {
   // },
 };
 
-export default schema;
+export default signinSchema;
