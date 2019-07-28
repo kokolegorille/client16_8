@@ -3,14 +3,6 @@ import * as THREE from 'three';
 
 import Joystick from '../components/joystick';
 
-// {
-//   model,
-//   color,
-//   x, y, z,
-//   h, pb,
-//   animation
-// }
-
 const Room = () => {
   const [animation, setAnimation] = useState('Idle');
   const [motion, setMotion] = useState();
@@ -20,6 +12,9 @@ const Room = () => {
   // Object is mutable!
   const [object, _setObject] = useState(new THREE.Object3D());
 
+  const clock = new THREE.Clock();
+
+  // Joystick callback handler
   const playerControl = ({ forward, turn }) => {
     turn = - turn;
     let newMotion;
@@ -40,19 +35,20 @@ const Room = () => {
           if (animation != 'Idle') setAnimation('Idle');
         }
       }
-      if (forward==0 && turn==0) {
-        newMotion = null;
-      } else {
-        newMotion = { forward, turn };
-      }
     };
+    if (forward==0 && turn==0) {
+      newMotion = null;
+    } else {
+      newMotion = { forward, turn };
+    }
+
     setMotion(newMotion);
 
-    // Normally You should pass a delta time
-    move(newMotion, 1);
+    move(newMotion, clock.getDelta());
   };
 
   const move = (motion, dt) => {
+    // Can be blocked by collision...
     let blocked = false;
 
     // Set vector
@@ -63,7 +59,7 @@ const Room = () => {
       if (!blocked) {
         if (motion.forward > 0) {
           const speed = animation == 'Running' ? 500 : 150;
-          this.object.translateZ(dt * speed);
+          object.translateZ(dt * speed);
         } else {
           object.translateZ(-dt * 30);
         }
@@ -84,8 +80,11 @@ const Room = () => {
 
   return (
     <div style={{border: 'solid 1px'}}> 
-      <p>{animation}</p>
       <dl>
+        <dt>Animation</dt>
+        <dd>{animation}</dd>
+        <dt>Move</dt>
+        <dd>{JSON.stringify(motion) || 'No motion'}</dd>
         <dt>x</dt>
         <dd>{vector.x}</dd>
         <dt>y</dt>

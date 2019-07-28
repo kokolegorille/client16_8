@@ -52,6 +52,14 @@ const Member = ({authentication}) => {
   };
 
   const closeSocket = () => {
+    if (state.socket) {
+      try {
+        state.socket.disconnect();
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      }
+    }
     dispatch({type: SOCKET_CLOSED});
   }
 

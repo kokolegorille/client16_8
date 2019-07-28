@@ -28,14 +28,6 @@ const reducer = (state, action) => {
       }
 
     case SOCKET_CLOSED:
-      if (socket) {
-          try {
-            socket.disconnect();
-          } catch (err) {
-            // eslint-disable-next-line no-console
-            console.log(err);
-          }
-        }
       return {
         isConnected: false,
         socket: null,

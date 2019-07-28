@@ -71,7 +71,6 @@ const reducer = (state, action) => {
     
     // Messages
     case CLEAR_MESSAGES:
-      console.log("KNDVLKSVLDSBV")
       return {
         ...state,
         messages: []
