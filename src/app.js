@@ -25,6 +25,7 @@ import Form from './components/form';
 import TreeProperties from './components/tree_properties';
 
 import TodoApp from './views/todoApp';
+import Joystick from './components/joystick';
 
 import { formatTimestamp } from './utils/formatter';
 
@@ -190,9 +191,10 @@ const App = () => {
             authentication.isAuthenticated &&
             <>
               <Member authentication={authentication} />
-              <TodoApp />
             </>
           }
+          <TodoApp />
+          <Joystick />
         </div>
       </main>
       

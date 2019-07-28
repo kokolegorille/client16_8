@@ -7,13 +7,18 @@ import todoSchema from '../schemas/todo_schema';
 import Form from '../components/form';
 import TreeProperties from '../components/tree_properties';
 
+import useMousePosition from '../hooks/use_mouse_position';
+
 const TodoApp = () => {
   const [state, _dispatch, actions] = useCrudReducer();
   const { add, remove } = actions;
 
+  // Just for demo, it tracks down mouse movement :-)
+  const position = useMousePosition();
+
   const handleSubmit = formState => add(formState);
 
-  console.log(state);
+  // console.log(state);
 
   const content = Object.keys(state)
     .map(uuid => {
@@ -33,6 +38,8 @@ const TodoApp = () => {
       <ul>
         {content}
       </ul>
+
+      <p>{position.x} - {position.y}</p>
     </div>
   )
 };
