@@ -7,3 +7,11 @@ body { background-color: $background-color; }
 
 .flex { display: flex; }
 */ 
+
+.my-list {
+  margin-left: 0; 
+  padding-left: 1em;
+  // li {
+  //   list-style-type: none;
+  // }
+}

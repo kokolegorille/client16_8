@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import SocketContext from '../contexts/socket_context';
 import useChannelsReducer from '../hooks/use_channels_reducer';
 import TreeProperties from '../components/tree_properties';
+import ChannelsControl from '../components/channels_control';
 
 // Channels setters
 import setLobbyChannel from '../channels/set_lobby_channel';
@@ -38,34 +39,20 @@ const Lobby = () => {
     };
   }, []);
 
+  const listOfChannels = Object
+    .keys(allowedChannels)
+    .map(topic => ({topic, state: !!channelsState.channels[topic]}));
+
   return (
     <div>
       <h2>Lobby</h2>
       <TreeProperties object={printableState} />
-      <ul>
-        {
-          Object.keys(allowedChannels).map(topicPrefix => 
-            channelsState.channels[topicPrefix] ?
-            <li key={topicPrefix}>
-              {topicPrefix}&nbsp;
-              <button 
-                onClick={() => leaveChannel(topicPrefix)}
-                className='btn btn-link' >
-                Disconnect
-              </button>
-            </li>
-             :
-            <li key={topicPrefix}>
-              {topicPrefix}&nbsp;
-              <button 
-                onClick={() => joinChannel(state.socket, topicPrefix)}
-                className='btn btn-link' >
-                Reconnect
-              </button>
-            </li>
-          )
-        }
-      </ul>
+      
+      <ChannelsControl 
+        channels={listOfChannels} 
+        socket={state.socket} 
+        join={joinChannel} 
+        leave={leaveChannel}/>
     </div>
   )
 };

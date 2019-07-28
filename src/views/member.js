@@ -13,7 +13,9 @@ import useChannelsReducer,
 import SocketContext from '../contexts/socket_context';
 
 import TreeProperties from '../components/tree_properties';
+import ChannelsControl from '../components/channels_control';
 import Lobby from './lobby';
+import Game from './game';
 
 const socketOptions = token => ({
   params: { token },
@@ -107,6 +109,11 @@ const Member = ({authentication}) => {
     }
   };
 
+  const listOfChannels = Object
+    .keys(allowedChannels)
+    .map(topicPrefix => prefixToTopic(topicPrefix))
+    .map(topic => ({topic, state: !!channelsState.channels[topic]}));
+
   return (
     <div>
       <h1>Member</h1>
@@ -114,37 +121,16 @@ const Member = ({authentication}) => {
         <div>
           <h3>Authentication</h3>
           <TreeProperties object={authentication} exclude={['token']} />
-        </div>
-        <div>
           <h3>Network</h3>
           <TreeProperties object={state} exclude={['socket']} />
           <TreeProperties object={printableState} />
-          <ul>
-            {
-              Object.keys(allowedChannels)
-                .map(topicPrefix => prefixToTopic(topicPrefix))
-                .map(fullTopic => 
-                channelsState.channels[fullTopic] ?
-                <li key={fullTopic}>
-                  {fullTopic}&nbsp;
-                  <button 
-                    onClick={() => leaveChannel(fullTopic)}
-                    className='btn btn-link' >
-                    Disconnect
-                  </button>
-                </li>
-                :
-                <li key={fullTopic}>
-                  {fullTopic}&nbsp;
-                  <button 
-                    onClick={() => joinChannel(state.socket, fullTopic)}
-                    className='btn btn-linkå' >
-                    Reconnect
-                  </button>
-                </li>
-              )
-            }
-          </ul>
+
+          <ChannelsControl 
+            channels={listOfChannels} 
+            socket={state.socket} 
+            join={joinChannel} 
+            leave={leaveChannel}/>
+
           <button 
             onClick={() => send('system', 'ping', {ping_time: Date.now()})}
             className="btn btn-link">
@@ -155,12 +141,16 @@ const Member = ({authentication}) => {
             className="btn btn-link">
             Clear messages
           </button>
+          <SocketContext.Provider value={state}>
+            <Lobby />
+          </SocketContext.Provider>
         </div>
-        <SocketContext.Provider 
-          value={state}>
-          <Lobby />
-        </SocketContext.Provider>
-      </div>      
+        <div className="flex-grow-1">
+          <SocketContext.Provider value={state}>
+            <Game />
+          </SocketContext.Provider>
+        </div>
+      </div>
     </div>
   )
 };

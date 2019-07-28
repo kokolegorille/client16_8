@@ -24,7 +24,6 @@ import Navbar from './components/navbar';
 import Form from './components/form';
 import TreeProperties from './components/tree_properties';
 
-import Room from './views/room';
 import TodoApp from './views/todoApp';
 
 import { formatTimestamp } from './utils/formatter';
@@ -165,6 +164,7 @@ const App = () => {
             <>
               <h2>Welcome</h2>
               <p>You are not connected.</p>
+              <TodoApp />
             </>
           }
           {
@@ -193,8 +193,6 @@ const App = () => {
               <Member authentication={authentication} />
             </>
           }
-          <TodoApp />
-          <Room />
         </div>
       </main>
       

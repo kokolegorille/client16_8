@@ -38,7 +38,7 @@ const TreeProperties = ({object, recursive = true, exclude = []}) => {
     );
   
   return (
-    <ul>
+    <ul className='my-list'>
       {collector}
     </ul>
   );

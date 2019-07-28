@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 import Joystick from '../components/joystick';
 
-const Room = () => {
+const Game = () => {
   const [animation, setAnimation] = useState('Idle');
   const [motion, setMotion] = useState();
   const [vector, setVector] = useState({
@@ -101,4 +101,4 @@ const Room = () => {
   );
 };
 
-export default Room;
+export default Game;
