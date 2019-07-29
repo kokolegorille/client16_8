@@ -107,10 +107,19 @@ const reducer = (state, action) => {
   }
 }
 
-const useChannelsReducer = (
+const defaultOnCallback = (topic, type, payload) => {
+  // eslint-disable-next-line no-console
+  console.log('Default onCallback handler: ', topic, type, payload);
+};
+
+// allowedChannels => object with topic as key, and setter as value
+// onCallBack => server events callback
+// initialState => the initial state value
+const useChannelsReducer = ({
   allowedChannels, 
+  onCallback = defaultOnCallback,
   initialState = defaultState
-) => {
+}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // ACTIONS
@@ -118,9 +127,9 @@ const useChannelsReducer = (
   const joinChannel = (socket, topic) => {
     const topicPrefix = topic.split(':')[0];
 
-    const setter = allowedChannels[topicPrefix];
-    if (setter) {
-      setter(dispatch, socket, topic);
+    const channelSetter = allowedChannels[topicPrefix];
+    if (channelSetter) {
+      channelSetter(dispatch, socket, topic, onCallback);
     } else {
       // eslint-disable-next-line no-console
       console.log(`Unknown topic : ${topic}`);
@@ -157,7 +166,7 @@ const useChannelsReducer = (
       console.log(message);
     } else {
       // eslint-disable-next-line no-console
-      console.log(`${message} could not be sent`);
+      console.log(`${message} for topic ${topic} could not be sent`);
     }
   };
 

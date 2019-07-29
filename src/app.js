@@ -24,7 +24,7 @@ import Navbar from './components/navbar';
 import Form from './components/form';
 import TreeProperties from './components/tree_properties';
 
-import TodoApp from './views/todoApp';
+import TodoApp from './views/todo_app';
 
 import { formatTimestamp } from './utils/formatter';
 
@@ -147,54 +147,54 @@ const App = () => {
         <header>
           <Navbar />
         </header>
+      
+        <main role="main">
+          <div className="container mt-4">
+            {
+                inProgress && 
+                <img src='/images/spinner.png' />
+            }  
+            {
+              authentication.errors && 
+              <TreeProperties object={authentication.errors} />
+            }
+            {
+              !authentication.isAuthenticated && !signMode &&
+              <>
+                <h2>Welcome</h2>
+                <p>You are not connected.</p>
+                <TodoApp />
+              </>
+            }
+            {
+              !authentication.isAuthenticated && signMode === 'SIGNIN' &&
+              <>
+                <h2>Sign In</h2>
+                <Form 
+                  schema={signinSchema} 
+                  callback={handleSubmitSignin} 
+                  handleCancel={handleCancel} />
+              </>
+            }
+            {
+              !authentication.isAuthenticated && signMode === 'SIGNUP' &&
+              <>
+                <h2>Sign Up</h2>
+                <Form 
+                  schema={signupSchema} 
+                  callback={handleSubmitSignup} 
+                  handleCancel={handleCancel} />
+              </>
+            }
+            {
+              authentication.isAuthenticated &&
+              <>
+                <Member authentication={authentication} />
+              </>
+            }
+          </div>
+        </main>
       </AuthContext.Provider>
-
-      <main role="main">
-        <div className="container mt-4">
-          {
-              inProgress && 
-              <img src='/images/spinner.png' />
-          }  
-          {
-            authentication.errors && 
-            <TreeProperties object={authentication.errors} />
-          }
-          {
-            !authentication.isAuthenticated && !signMode &&
-            <>
-              <h2>Welcome</h2>
-              <p>You are not connected.</p>
-              <TodoApp />
-            </>
-          }
-          {
-            !authentication.isAuthenticated && signMode === 'SIGNIN' &&
-            <>
-              <h2>Sign In</h2>
-              <Form 
-                schema={signinSchema} 
-                callback={handleSubmitSignin} 
-                handleCancel={handleCancel} />
-            </>
-          }
-          {
-            !authentication.isAuthenticated && signMode === 'SIGNUP' &&
-            <>
-              <h2>Sign Up</h2>
-              <Form 
-                schema={signupSchema} 
-                callback={handleSubmitSignup} 
-                handleCancel={handleCancel} />
-            </>
-          }
-          {
-            authentication.isAuthenticated &&
-            <>
-              <Member authentication={authentication} />
-            </>
-          }
-        </div>
-      </main>
       
       <footer className="page-footer font-small">
         <div className="container-fluid text-center text-md-left">

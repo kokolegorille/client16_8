@@ -4,14 +4,12 @@ $link-color: #f39c12;
 $hover-link-color: #c0392b;
 
 body { background-color: $background-color; }
-
-.flex { display: flex; }
 */ 
 
 .my-list {
   margin-left: 0; 
   padding-left: 1em;
-  // li {
-  //   list-style-type: none;
-  // }
+  li {
+    list-style-type: none;
+  }
 }

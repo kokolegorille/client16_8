@@ -7,7 +7,7 @@ import {
 } from '../hooks/use_channels_reducer';
 import setPresence from './set_presence';
 
-const setLobbyChannel = (dispatch, socket, topic = 'lobby') => {
+const setLobbyChannel = (dispatch, socket, topic, _onCallback) => {
   const channel = socket.channel(topic, {});
 
   // Presences

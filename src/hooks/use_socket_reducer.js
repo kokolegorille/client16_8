@@ -22,11 +22,6 @@ const reducer = (state, action) => {
       };
     
     case SOCKET_ERROR:
-      return {
-        ...state,
-        isConnected: false,
-      }
-
     case SOCKET_CLOSED:
       return {
         isConnected: false,

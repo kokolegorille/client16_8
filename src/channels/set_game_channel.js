@@ -4,25 +4,21 @@ import {
   CONNECT_CHANNEL_TIMEOUT,
   CHANNEL_ERROR,
   CHANNEL_CLOSED,
-  MESSAGE_RECEIVED,
 } from '../hooks/use_channels_reducer';
 import setPresence from './set_presence';
 
-const setSystemChannel = (dispatch, socket, topic, _onCallback) => {
+const setGameChannel = (dispatch, socket, topic, onCallback) => {
   const channel = socket.channel(topic, {});
 
   // Presences
   setPresence(channel, dispatch);
 
-  // Control and Lag estimation
-  channel.on('ping', payload =>  channel.push('pong', payload));
-
-  // Testing
-  channel.on('pong', payload => 
-    dispatch({ 
-      type: MESSAGE_RECEIVED, 
-      payload: {topic, command: 'pong', payload} 
-    }));
+  // Events from server
+  channel.on('uuid_init', payload => onCallback(topic, 'uuid_init', payload));
+  channel.on('world_init', payload => onCallback(topic, 'world_init', payload));
+  channel.on('world_update', payload => onCallback(topic, 'world_update', payload));
+  channel.on('game_joined', payload => onCallback(topic, 'game_joined', payload));
+  channel.on('game_left', payload => onCallback(topic, 'game_left', payload));
 
   // Join
   if (channel.state !== 'joined') {
@@ -44,14 +40,14 @@ const setSystemChannel = (dispatch, socket, topic, _onCallback) => {
       payload: { topic, error: 'there was an error!' } 
     })
   );
-  channel.onClose(() => {
+  channel.onClose(() => 
     dispatch({ 
       type: CHANNEL_CLOSED, 
       payload: { topic, error: 'the channel has gone away gracefully' } 
     })
-  });
+  );
 
   // return channel;
 };
 
-export default setSystemChannel;
+export default setGameChannel;

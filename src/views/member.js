@@ -37,7 +37,7 @@ const allowedChannels = {
 const Member = ({authentication}) => {
   const [state, dispatch] = useSocketReducer();
   const [channelsState, channelsDispatch, channelsActions] = 
-    useChannelsReducer(allowedChannels);
+    useChannelsReducer({ allowedChannels });
   const { joinChannel, leaveChannel, send } = channelsActions;
 
   const openSocket = () => {
@@ -79,11 +79,9 @@ const Member = ({authentication}) => {
     const newSocket = openSocket();
 
     joinChannel(newSocket, 'system');
-    // joinChannel(newSocket, 'lobby');
     joinChannel(newSocket, userTopic);
     return () => {
       leaveChannel('system');
-      // leaveChannel('lobby');
       leaveChannel(userTopic);
       closeSocket();
     };
@@ -147,7 +145,7 @@ const Member = ({authentication}) => {
         </div>
         <div className="flex-grow-1">
           <SocketContext.Provider value={state}>
-            <Game />
+            <Game id="1234" />
           </SocketContext.Provider>
         </div>
       </div>

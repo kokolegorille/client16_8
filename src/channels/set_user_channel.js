@@ -6,7 +6,7 @@ import {
   CHANNEL_CLOSED,
 } from '../hooks/use_channels_reducer';
 
-const setUserChannel = (dispatch, socket, topic) => {
+const setUserChannel = (dispatch, socket, topic, _onCallback) => {
   const channel = socket.channel(topic, {});
 
   // Join

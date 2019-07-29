@@ -14,7 +14,7 @@ const allowedChannels = {
 const Lobby = () => {
   const state = useContext(SocketContext);
   const [channelsState, _channelsDispatch, channelsActions] = 
-    useChannelsReducer(allowedChannels);
+    useChannelsReducer({ allowedChannels });
   const { joinChannel, leaveChannel } = channelsActions;
 
   const printableState = {
