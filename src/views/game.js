@@ -219,6 +219,12 @@ const Game = ({id}) => {
         <div>
           <h3>Local</h3>
           <PlayerInfo player={localUser} />
+          <dl className='row'>
+            <dt className='col-sm-3'>forward</dt>
+            <dd className='col-sm-9'>{motion ? motion.forward : 0}</dd>
+            <dt className='col-sm-3'>turn</dt>
+            <dd className='col-sm-9'>{motion ? motion.turn : 0}</dd>
+          </dl>
 
           <h3>Remote</h3>
           <ul className='list-unstyled'>

@@ -1,5 +1,6 @@
 import { Socket } from 'phoenix';
 import React, { useEffect } from 'react';
+import { useRoutes } from 'hookrouter';
 
 import { ROOT_SOCKET } from '../config';
 import useSocketReducer, {
@@ -16,6 +17,7 @@ import TreeProperties from '../components/tree_properties';
 import ChannelsControl from '../components/channels_control';
 import Lobby from './lobby';
 import Game from './game';
+import MemberHome from './member_home';
 
 const socketOptions = token => ({
   params: { token },
@@ -34,11 +36,32 @@ const allowedChannels = {
   'user': setUserChannel,
 };
 
+// Todos
+import TodoApp from './todo_app';
+
+//Three world
+
+import ThreeWorld from './three_world';
+
+// Hookrouter
+import NotFound from './not_found';
+const routes = {
+  '/': () => <MemberHome />,
+  '/games/:id': ({id}) => <Game id={id} />,
+  '/todos': () => <TodoApp />,
+  '/three_world': () => <ThreeWorld />,
+};
+
 const Member = ({authentication}) => {
   const [state, dispatch] = useSocketReducer();
   const [channelsState, channelsDispatch, channelsActions] = 
     useChannelsReducer({ allowedChannels });
   const { joinChannel, leaveChannel, send } = channelsActions;
+
+
+  const routeResult = useRoutes(routes) || <NotFound />;
+
+  // console.log('--->', routeResult)
 
   const openSocket = () => {
     const newSocket = new Socket(
@@ -145,7 +168,7 @@ const Member = ({authentication}) => {
         </div>
         <div className="flex-grow-1">
           <SocketContext.Provider value={state}>
-            <Game id="1234" />
+            { routeResult }
           </SocketContext.Provider>
         </div>
       </div>

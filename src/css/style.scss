@@ -13,3 +13,19 @@ body { background-color: $background-color; }
     list-style-type: none;
   }
 }
+
+.absolute { position: absolute; }
+.relative { position: relative; }
+
+.threeControls {
+  bottom: 0;
+  left: '50%';
+
+  background-color: grey;
+  color: white;
+
+  filter: alpha(opacity=50); /* internet explorer */
+  -khtml-opacity: 0.5;      /* khtml, old safari */
+  -moz-opacity: 0.5;       /* mozilla, netscape */
+  opacity: 0.5;           /* fx, safari, opera */
+}

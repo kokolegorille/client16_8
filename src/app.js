@@ -24,8 +24,6 @@ import Navbar from './components/navbar';
 import Form from './components/form';
 import TreeProperties from './components/tree_properties';
 
-import TodoApp from './views/todo_app';
-
 import { formatTimestamp } from './utils/formatter';
 
 const App = () => {
@@ -65,12 +63,12 @@ const App = () => {
   );
 
   // Signin 
-  const signin = (params) => {
+  const signin = params => {
     // console.log(params);
 
     setInProgress(true);
     Api.signin(params)
-    .then((response) => {
+    .then(response => {
       setInProgress(false);
       setSignMode(null);
       dispatch({ type: SIGNIN_SUCCESS, payload: response.data });
@@ -82,12 +80,12 @@ const App = () => {
   };
 
   // Signup
-  const signup = (params) => {
+  const signup = params => {
     // console.log(params);
 
     setInProgress(true);
     Api.signup(params)
-    .then((response) => {
+    .then(response => {
       setInProgress(false);
       setSignMode(null);
       dispatch({ type: SIGNUP_SUCCESS, payload: response.data });
@@ -102,7 +100,7 @@ const App = () => {
   const refreshToken = token => {
     setInProgress(true);
     Api.refreshToken(token)
-    .then((response) => {
+    .then(response => {
       setInProgress(false);
       setSignMode(null);
       dispatch({ type: REFRESH_TOKEN_SUCCESS, payload: response.data });
@@ -163,7 +161,6 @@ const App = () => {
               <>
                 <h2>Welcome</h2>
                 <p>You are not connected.</p>
-                <TodoApp />
               </>
             }
             {

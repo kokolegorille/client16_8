@@ -33,6 +33,7 @@ const Joystick = ({ callback }) => {
   const [offset, setOffset] = useState(initialOffset);
 
   const getMousePosition = e => {
+    e.preventDefault();
     let x = e.targetTouches ? e.targetTouches[0].pageX : e.clientX;
     let y = e.targetTouches ? e.targetTouches[0].pageY : e.clientY;
     return {x, y};

@@ -93,6 +93,7 @@ const Form = ({
           <select
             name={name}
             {...calculatedProps}
+            onChange={e => handleChange(e, name)}
             {...selectProps} >
             {
               options.map(option => (
