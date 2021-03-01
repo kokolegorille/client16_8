@@ -17,7 +17,7 @@
     "phoenix": "^1.4.9",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "three": "^0.106.2",
+    "three": "^0.125.0",
     "three-orbit-controls": "^82.1.0",
     "uuid": "^3.3.2"
   },
